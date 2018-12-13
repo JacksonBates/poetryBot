@@ -2,6 +2,7 @@ import json
 import markovify
 import sys
 import random
+import re
 
 def poem_content():
     # Get raw text as string.
@@ -9,7 +10,7 @@ def poem_content():
         text = f.read()
 
     # Build the model.
-    text_model = markovify.Text(text, state_size=2)
+    text_model = markovify.Text(text, state_size=1)
 
     content = ""
     sentences = int(sys.argv[1])
@@ -17,7 +18,8 @@ def poem_content():
     poem_endings = [".",".",".","!"]
 
     for i in range(sentences):
-        content += text_model.make_short_sentence(50, tries=100)[:-1]
+        # re.sub is used to strip chapter:verse for biblical texts
+        content += re.sub(r'^\d*:\d*\s','',text_model.make_short_sentence(50, tries=100)[:-1])
         if i < sentences - 1:
           content += random.choice(line_endings)
         else:
