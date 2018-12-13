@@ -6,14 +6,16 @@ import re
 
 def poem_content():
     # Get raw text as string.
-    with open("./corpus.txt") as f:
+    corpus = sys.argv[1]
+    with open("./works/" + corpus) as f:
         text = f.read()
 
     # Build the model.
-    text_model = markovify.Text(text, state_size=1)
+    text_model = markovify.Text(text, state_size=2)
 
+    # Generate the poem
     content = ""
-    sentences = int(sys.argv[1])
+    sentences = int(sys.argv[2])
     line_endings = ["","","","","","","","","","","-",":","--",";",",",".",",",",",".",".","?","!"]
     poem_endings = [".",".",".","!"]
 
